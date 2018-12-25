@@ -9,10 +9,6 @@
         "sourceType": "module"
     },
     "rules": {
-        "indent": [
-            "error",
-            4
-        ],
         "linebreak-style": [
             "error",
             "windows"
@@ -24,6 +20,19 @@
         "semi": [
             "error",
             "always"
-        ]
+        ],
+        "no-trailing-spaces": "error",
+        "no-alert": "error",
+        "no-console": "warn",
+        "no-irregular-whitespace": "error",
+        "no-constant-condition": "error",
+        "eqeqeq": "error",
+        "callback-return": "error",
+        "handle-callback-err": "error",
+        "camelcase": "warn",
+        "new-cap": "warn",
+        "no-var": "warn",
+        "prefer-arrow-callback": "warn",
+        "prefer-const": "warn"
     }
 }

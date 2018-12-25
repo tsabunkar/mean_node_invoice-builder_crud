@@ -1,11 +1,62 @@
-// const express = require('express');
+require('./config/config');
 import express from 'express';
+import bodyParser from 'body-parser';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from './config/swagger.json';
+
+// import {
+//     mongoose
+// } from './db/mongoose_config';
+
+const {
+    mongoose
+} = require('./db/mongoose_config');
+
+
 const app = express();
-const PORT = 3000;
-app.get('/', (req, resp) => {
-    resp.json({
-        message: "'Welcone'"
+
+
+mongoose.connect(process.env.MONGODB_URI) // connecting to mongodb db atlas
+    .then(() => {
+        console.log('connected to db !'); // eslint-disable-line
+    })
+    .catch(() => {
+        console.log('failed to connect to db!'); // eslint-disable-line
     });
+
+
+
+app.use(bodyParser.json()); // !middleware which parses incoming request in JSON format, this body-parser middleware must be
+// !registered with express so wrote inside app.use();
+
+app.use(bodyParser.urlencoded({ // to parse
+    extended: false
+}));
+
+
+// !CORS error-
+app.use((req, resp, next) => {
+    // before contiuing the request to next middle ware just written below this middleware want to remove CORS error
+    resp.setHeader('Access-Control-Allow-Origin', '*'); // allowing access to all the url/paths
+    resp.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization'); // it may have this headers key
+    resp.setHeader('Access-Control-Expose-Headers', 'max-records, my-token'); // Allowing to custom-header expose to frontend
+    resp.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, PUT, OPTIONS');
+
+    next();
 });
 
-app.listen(PORT);
+
+
+
+// !Swagger-UI
+// http://localhost:3000/api-docs/
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
+    explorer: true
+}));
+
+// !above code is moved to separate file called router in -> models/posts.js
+// app.use('/api/posts', postsMessageRoutes); // filter routes with '/api/posts' -> redirect to postsRoutes
+
+module.exports = { // exporting the app
+    app
+};

@@ -41,3 +41,6 @@ $ eslint --init
 $ eslint <folder_name (or) file_name>
 
 To fix an eslint issue cmd-> $ eslint <folder_name (or) file_name> --fix
+
+TO SET ESLINT visit -> https://eslint.org/docs/rules/
+--------------------------------------------------------------------------------------------------------
