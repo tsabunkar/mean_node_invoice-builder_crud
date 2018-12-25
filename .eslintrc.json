@@ -30,7 +30,6 @@
         "callback-return": "error",
         "handle-callback-err": "error",
         "camelcase": "warn",
-        "new-cap": "warn",
         "no-var": "warn",
         "prefer-arrow-callback": "warn",
         "prefer-const": "warn"

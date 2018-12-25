@@ -3,14 +3,16 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './config/swagger.json';
-
-// import {
-//     mongoose
-// } from './db/mongoose_config';
+import http from 'http'; // nodejs package, require() -> nodejs function
 
 const {
     mongoose
 } = require('./db/mongoose_config');
+
+import {
+    invoiceRoute
+} from './routes/invoice';
+
 
 
 const app = express();
@@ -41,7 +43,6 @@ app.use((req, resp, next) => {
     resp.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization'); // it may have this headers key
     resp.setHeader('Access-Control-Expose-Headers', 'max-records, my-token'); // Allowing to custom-header expose to frontend
     resp.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, PUT, OPTIONS');
-
     next();
 });
 
@@ -55,8 +56,30 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
 }));
 
 // !above code is moved to separate file called router in -> models/posts.js
-// app.use('/api/posts', postsMessageRoutes); // filter routes with '/api/posts' -> redirect to postsRoutes
+app.use('/api/invoice', invoiceRoute); // filter routes with '/api/posts' -> redirect to postsRoutes
 
-module.exports = { // exporting the app
-    app
+
+
+
+// validating the PORT
+const normalizePort = val => {
+    const port = parseInt(val, 10);
+    if (isNaN(port)) {
+        // named pipe
+        return val;
+    }
+    if (port >= 0) {
+        // port number
+        return port;
+    }
+    return false;
 };
+
+
+const PORT = normalizePort(process.env.PORT || '3000');
+
+app.set('port', PORT); // setting port
+
+const server = http.createServer(app); // create node server which uses express
+
+server.listen(PORT); // start the server

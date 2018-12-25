@@ -1,7 +1,9 @@
 // first mongoose file, which will get executed
 import mongoose from 'mongoose';
 
-mongoose.Promise = global.Promise;
+mongoose.Promise = global.Promise; // !By default mongoose uses callback, but if
+// !we want to use async-await or promises then this code will specifiy it
+
 const url = process.env.MONGODB_URI;
 
 mongoose.connect(url, { // !remove deprication warning
