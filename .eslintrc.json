@@ -5,7 +5,13 @@
     },
     "extends": "eslint:recommended",
     "parserOptions": {
-        "ecmaVersion": 2015,
+        "ecmaVersion": 2017,
+        "ecmaFeatures": {
+            "templateStrings": true,
+            "arrowFunctions": true,
+            "destructuring": true,
+            "spread": true
+        },
         "sourceType": "module"
     },
     "rules": {
@@ -32,6 +38,7 @@
         "camelcase": "warn",
         "no-var": "warn",
         "prefer-arrow-callback": "warn",
-        "prefer-const": "warn"
+        "prefer-const": "warn",
+        "no-await-in-loop": "error"
     }
 }

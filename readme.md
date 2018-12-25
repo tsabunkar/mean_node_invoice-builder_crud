@@ -43,4 +43,34 @@ $ eslint <folder_name (or) file_name>
 To fix an eslint issue cmd-> $ eslint <folder_name (or) file_name> --fix
 
 TO SET ESLINT visit -> https://eslint.org/docs/rules/
+
+--------------------------------------------------------------------------------------------------------
+#Debugging Node Application -
+
+$ npm run build-copy-all
+$ npm run debug-dist
+
+-> open chrom browser > visit - chrome://inspect > click on inspect link > opens new browser > 
+   Source (tab) > +Add folder to workspace (open workspace which u want to debug) >
+   Apply break.points where you want to debug 
+
+
+#Alternate way of debugging-
+Using VSCode debugger >
+ Add Configuration > Select Nodemon > (Add this configuration)
+       {
+            "type": "node",
+            "request": "launch",
+            "name": "nodemon",
+            "runtimeExecutable": "nodemon",
+            "program": "${workspaceFolder}/dist/app.js",
+            "restart": true,
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "sourceMaps": true
+        },
+Click play button and apply break points in the server folder (dev code), bcoz we have used property
+"sourceMaps": true in above code.
+And Remebere the use of sourceMaps :) which we use to generate in our dist folder while executing build cmd
+
 --------------------------------------------------------------------------------------------------------

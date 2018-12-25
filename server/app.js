@@ -1,13 +1,10 @@
-require('./config/config');
 import express from 'express';
 import bodyParser from 'body-parser';
-import swaggerUi from 'swagger-ui-express';
-import swaggerDocument from './config/swagger.json';
-import http from 'http'; // nodejs package, require() -> nodejs function
 
-const {
-    mongoose
-} = require('./db/mongoose_config');
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from './config/config.json';
+
+import http from 'http'; // nodejs package, require() -> nodejs function
 
 import {
     invoiceRoute
@@ -16,16 +13,6 @@ import {
 
 
 const app = express();
-
-
-mongoose.connect(process.env.MONGODB_URI) // connecting to mongodb db atlas
-    .then(() => {
-        console.log('connected to db !'); // eslint-disable-line
-    })
-    .catch(() => {
-        console.log('failed to connect to db!'); // eslint-disable-line
-    });
-
 
 
 app.use(bodyParser.json()); // !middleware which parses incoming request in JSON format, this body-parser middleware must be
@@ -55,8 +42,9 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
     explorer: true
 }));
 
+
 // !filter routes with '/api/invoice' -> redirect to invoiceRoute
-app.use('/api/invoice', invoiceRoute);
+app.use('/api', invoiceRoute);
 
 
 
