@@ -11,7 +11,7 @@ const {
 
 import {
     invoiceRoute
-} from './routes/invoice';
+} from './routes/invoice.routes';
 
 
 
@@ -55,8 +55,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
     explorer: true
 }));
 
-// !above code is moved to separate file called router in -> models/posts.js
-app.use('/api/invoice', invoiceRoute); // filter routes with '/api/posts' -> redirect to postsRoutes
+// !filter routes with '/api/invoice' -> redirect to invoiceRoute
+app.use('/api/invoice', invoiceRoute);
 
 
 
