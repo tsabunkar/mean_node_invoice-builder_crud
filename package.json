@@ -1,0 +1,24 @@
+{
+  "name": "mean_node_invoice-builder",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server/app.js --exec babel-node --presets env",
+    "build": "babel server -d dist --source-maps",
+    "serve": "node dist/app.js",
+    "lint": "eslint server",
+    "lint-all": "eslint **/*.js "
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0"
+  }
+}
