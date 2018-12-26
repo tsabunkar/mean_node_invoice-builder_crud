@@ -74,3 +74,14 @@ Click play button and apply break points in the server folder (dev code), bcoz w
 And Remebere the use of sourceMaps :) which we use to generate in our dist folder while executing build cmd
 
 --------------------------------------------------------------------------------------------------------
+Joi -> 
+npm i joi
+
+This is joi, joi allows you to create blueprints or schemas for JavaScript objects (an object that stores information) to ensure validation of key information.
+
+Note: Joi is mainly used to validate the request body recieved from frontend is valid (i.e- has required
+fileds/property, has valid data-type, length of the field/property).
+Thus Instead of we validting this code by manually/programtically, we can use JOI
+
+
+--------------------------------------------------------------------------------------------------------
