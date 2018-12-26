@@ -2,7 +2,8 @@ import {
     InvoiceModel
 } from '../models/invoice.model';
 
-import Joi from 'joi';
+import joiValidation from '../helpers/request-validation';
+
 const {
     ObjectID
 } = require('mongodb');
@@ -27,14 +28,14 @@ const findAllInvoices = async (req, resp, next) => { // eslint-disable-line
 const createInvoice = async (req, resp, next) => { // eslint-disable-line
 
     /*   const {
-          item,
-          quantity,
-          date,
-          dueDate,
-          rate,
-          tax
+            item,
+            quantity,
+            date,
+            dueDate,
+            rate,
+            tax
 
-      } = req.body; // destructring assignment
+        } = req.body; // destructring assignment
 
 
 
@@ -54,21 +55,7 @@ const createInvoice = async (req, resp, next) => { // eslint-disable-line
         return;
     }*/
 
-    // !Instead of we validating the request body - weather particular property is there, data-type of a
-    // ! property is correct, We can use Joi for validating our  http reqest body matches our mongooses schema
-    const idealSchemaForInvoiceModel = Joi.object().keys({
-        item: Joi.string().required(),
-        quantity: Joi.number().integer().required(),
-        date: Joi.date().required(),
-        dueDate: Joi.date().required(),
-        rate: Joi.number().required(),
-        tax: Joi.number().optional()
-    });
-
-    // !JOI is mainly used to validate our schema
-    // !Below JOi is validation our Idealschema with the request body send by frontend (instead we
-    // !writing each validation logic manually)
-    const { error, value } = Joi.validate(req.body, idealSchemaForInvoiceModel);
+    const { error, value } = joiValidation.joiValidationForCreateInvoice(req);
 
     if (error) {
         const errorObj = new Error('Request body Validation of Schema failed');
@@ -217,16 +204,8 @@ const deleteAllInvoices = async (req, resp, next) => { // eslint-disable-line
 
 
 const updateInvoice = async (req, resp, next) => { // eslint-disable-line
-    const idealSchemaForInvoiceModel = Joi.object().keys({
-        item: Joi.string().optional(),
-        quantity: Joi.number().integer().optional(),
-        date: Joi.date().optional(),
-        dueDate: Joi.date().optional(),
-        rate: Joi.number().optional(),
-        tax: Joi.number().optional()
-    });
 
-    const { error, value } = Joi.validate(req.body, idealSchemaForInvoiceModel);
+    const { error, value } = joiValidation.joiValidationForUpdateInvoice(req);
 
     if (error) {
         resp.status(500).json({
