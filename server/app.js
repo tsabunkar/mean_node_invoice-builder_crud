@@ -1,10 +1,9 @@
 import express from 'express';
-import bodyParser from 'body-parser';
-
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './config/config.json';
 
 import http from 'http'; // nodejs package, require() -> nodejs function
+import logger from 'morgan';
 
 import {
     invoiceRoute
@@ -15,12 +14,17 @@ import {
 const app = express();
 
 
-app.use(bodyParser.json()); // !middleware which parses incoming request in JSON format, this body-parser middleware must be
+// !*NOTE: Instead of installing spearate middleare for parsing req and resp, we can use express itself :)
+app.use(express.json());// !middleware which parses incoming request in JSON format, this body-parser middleware must be
 // !registered with express so wrote inside app.use();
 
-app.use(bodyParser.urlencoded({ // to parse
+app.use(express.urlencoded({ // to parse
     extended: false
 }));
+
+// !Using Morgan middleware for logging purposes
+app.use(logger('dev'));
+
 
 
 // !CORS error-
@@ -44,7 +48,30 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
 
 
 // !filter routes with '/api/invoice' -> redirect to invoiceRoute
-app.use('/api', invoiceRoute);
+app.use('/api/invoice', invoiceRoute);
+
+
+
+// !Creating a global level middleware for Error handling
+app.use((req, resp, next) => {
+    const error = new Error('Not Found');
+    error.message = 'Invalid Route';
+    error.status = 404;
+    next(error);
+});
+
+// !Creating a error handling miidleware
+app.use((error, req, resp, next) => { // eslint-disable-line
+    resp.status(error.status || 500); // if user provides the status then use - error.status else 500
+    return resp.json({
+        message: error.message
+    });
+});
+
+
+
+
+
 
 
 
