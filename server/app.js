@@ -1,6 +1,6 @@
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
-import swaggerDocument from './config/config.json';
+import swaggerDocument from './config/swagger.json';
 
 import http from 'http'; // nodejs package, require() -> nodejs function
 import logger from 'morgan';
