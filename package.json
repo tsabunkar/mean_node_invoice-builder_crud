@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server/app.js --exec babel-node --presets env",
+    "start": "start http://localhost:3000/api-docs/ && nodemon server/app.js --exec babel-node --presets env",
     "build": "npm run clean && babel server -d dist --source-maps",
     "build-without-source-maps": "npm run clean && babel server --out-dir dist",
     "build-copy-all": "npm run clean && babel server -d dist --source-maps --copy-files",
