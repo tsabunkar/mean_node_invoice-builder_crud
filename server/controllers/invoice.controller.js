@@ -15,10 +15,11 @@ const findAllInvoices = async (req, resp, next) => { // eslint-disable-line
 
         resp.status(200).json(invoices);
 
-    }
-    catch (err) {
+    } catch (err) {
         resp.status(500).json({
-            message: err
+            message: err,
+            data: '',
+            status: 500
         });
     }
 
@@ -55,7 +56,10 @@ const createInvoice = async (req, resp, next) => { // eslint-disable-line
         return;
     }*/
 
-    const { error, value } = joiValidation.joiValidationForCreateInvoice(req);
+    const {
+        error,
+        value
+    } = joiValidation.joiValidationForCreateInvoice(req);
 
     if (error) {
         const errorObj = new Error('Request body Validation of Schema failed');
@@ -81,19 +85,24 @@ const createInvoice = async (req, resp, next) => { // eslint-disable-line
         // console.log('invoiceCreated', invoiceCreated);
         if (!invoiceCreated) {
             resp.status(500).json({
-                message: 'Failed to create Inovice Object'
+                message: 'Failed to create Inovice Object',
+                data: '',
+                status: 500
             });
             return;
         }
 
         resp.status(200).json({
             message: 'You have created object succesfully!',
-            data: invoiceCreated
+            data: invoiceCreated,
+            status: 200
         });
 
     } catch (err) {
         resp.status(500).json({
-            message: err
+            message: err,
+            data: '',
+            status: 500
         });
     }
 
@@ -108,7 +117,9 @@ const findInvoiceById = async (req, resp, next) => { // eslint-disable-line
 
     if (!ObjectID.isValid(uriIdFetch)) {
         resp.status(404).json({
-            message: 'Id Format is not valid'
+            message: 'Id Format is not valid',
+            data: '',
+            status: 404
         });
         return;
     }
@@ -120,19 +131,24 @@ const findInvoiceById = async (req, resp, next) => { // eslint-disable-line
         if (!invoice) {
             // If document is empty
             resp.status(404).json({
-                message: 'Id format is valid but no docu found with this id'
+                message: 'Id format is valid but no docu found with this id',
+                data: '',
+                status: 404
             });
             return;
         }
 
         //success
         resp.status(200).json({
-            message: invoice
+            message: 'Invoice found by the Id - ' + uriIdFetch,
+            data: invoice,
+            status: 200
         });
-    }
-    catch (err) {
+    } catch (err) {
         resp.status(500).json({
-            message: err
+            message: err,
+            data: '',
+            status: 500
         });
     }
 
@@ -144,7 +160,9 @@ const deleteInvoicebyId = async (req, resp, next) => { // eslint-disable-line
 
     if (!ObjectID.isValid(uriIdFetch)) {
         resp.status(404).json({
-            message: 'Id Format is not valid'
+            message: 'Id Format is not valid',
+            data: '',
+            status: 404
         });
         return;
     }
@@ -159,18 +177,23 @@ const deleteInvoicebyId = async (req, resp, next) => { // eslint-disable-line
             // If document is empty
             resp.status(404).json({
                 message: 'Id format is valid but no docu found with this id',
+                data: '',
+                status: 404
             });
             return;
         }
 
         //success
         resp.status(200).json({
-            message: invoiceDeleted
+            message: 'Invoice deleted successfully!',
+            data: invoiceDeleted,
+            status: 200
         });
-    }
-    catch (err) {
+    } catch (err) {
         resp.status(500).json({
-            message: err
+            message: err,
+            data: '',
+            status: 500
         });
     }
 };
@@ -185,19 +208,24 @@ const deleteAllInvoices = async (req, resp, next) => { // eslint-disable-line
         if (!invoicesDeleted) {
             // If document is empty
             resp.status(404).json({
-                message: 'Id format is valid but some error while deleting the documents'
+                message: 'Id format is valid but some error while deleting the documents',
+                data: '',
+                status: 404
             });
             return;
         }
 
         //success
         resp.status(200).json({
-            message: invoicesDeleted
+            message: 'All Invoices deleted successfully',
+            data: invoicesDeleted,
+            status: 200
         });
-    }
-    catch (err) {
+    } catch (err) {
         resp.status(500).json({
-            message: err
+            message: err,
+            data: '',
+            status: 500
         });
     }
 };
@@ -205,11 +233,16 @@ const deleteAllInvoices = async (req, resp, next) => { // eslint-disable-line
 
 const updateInvoice = async (req, resp, next) => { // eslint-disable-line
 
-    const { error, value } = joiValidation.joiValidationForUpdateInvoice(req);
+    const {
+        error,
+        value
+    } = joiValidation.joiValidationForUpdateInvoice(req);
 
     if (error) {
         resp.status(500).json({
-            message: error
+            message: error,
+            data: '',
+            status: 500
         });
         return;
     }
@@ -220,7 +253,9 @@ const updateInvoice = async (req, resp, next) => { // eslint-disable-line
 
     if (!ObjectID.isValid(uriIdFetch)) {
         resp.status(404).json({
-            message: 'Id Format is not valid'
+            message: 'Id Format is not valid',
+            data: '',
+            status: 404
         });
         return;
     }
@@ -228,24 +263,31 @@ const updateInvoice = async (req, resp, next) => { // eslint-disable-line
     try {
         const invoiceUpdated = await InvoiceModel.findOneAndUpdate({
             _id: uriIdFetch,
-        }, value, { new: true });
+        }, value, {
+            new: true
+        });
 
         if (!invoiceUpdated) {
             resp.status(404).json({
-                error: 'Id format is valid but no docu found with this id',
-                isEveryThingOk: false
+                message: 'Id format is valid but no docu found with this id',
+                data: '',
+                status: 404
             });
             return;
         }
 
         //success
         resp.status(200).json({
-            message: invoiceUpdated
+            message: 'Invoice updated successfully',
+            data: invoiceUpdated,
+            status: 200
         });
 
     } catch (err) {
         resp.status(500).json({
-            message: err
+            message: err,
+            data: '',
+            status: 500
         });
     }
 
